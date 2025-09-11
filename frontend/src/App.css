@@ -1,0 +1,260 @@
+@import "tailwindcss";
+
+@theme {
+  /* === PRIMARY COLORS (Facebook Blue) === */
+  --color-primary: #1877f2;           /* Facebook Blue */
+  --color-primary-hover: #166fe5;     /* Facebook Blue Hover */
+  --color-primary-dark: #1565c0;      /* Facebook Blue Dark */
+  --color-primary-light: #42a5f5;     /* Facebook Blue Light */
+
+  /* === SECONDARY COLORS (Facebook Green) === */
+  --color-secondary: #42b883;         /* Facebook Green (Success) */
+  --color-secondary-hover: #369870;   /* Facebook Green Hover */
+  --color-secondary-light: #6bcf7f;   /* Facebook Green Light */
+
+  /* === SUCCESS & STATUS COLORS === */
+  --color-success: #42b883;           /* Success Green */
+  --color-success-light: #d4edda;     /* Success Light Background */
+  --color-warning: #f59e0b;           /* Warning Amber */
+  --color-warning-light: #fef3c7;     /* Warning Light Background */
+  --color-danger: #e74c3c;            /* Danger Red */
+  --color-danger-light: #fee2e2;      /* Danger Light Background */
+  --color-info: #1877f2;              /* Info Blue (Same as Primary) */
+  --color-info-light: #dbeafe;        /* Info Light Background */
+
+  /* === TEXT COLORS (Facebook Text Hierarchy) === */
+  --color-text-primary: #1c1e21;      /* Facebook Primary Text (Dark) */
+  --color-text-secondary: #65676b;    /* Facebook Secondary Text */
+  --color-text-tertiary: #8a8d91;     /* Facebook Tertiary Text */
+  --color-text-placeholder: #90949c;  /* Facebook Placeholder Text */
+  --color-text-disabled: #bec3c9;     /* Facebook Disabled Text */
+  --color-text-white: #ffffff;        /* White Text */
+  --color-text-muted: #606770;        /* Facebook Muted Text */
+
+  /* === BACKGROUND COLORS (Facebook Backgrounds) === */
+  --color-bg-primary: #ffffff;        /* Facebook Main Background (White) */
+  --color-bg-secondary: #f0f2f5;      /* Facebook Secondary Background (Light Gray) */
+  --color-bg-tertiary: #e4e6ea;       /* Facebook Tertiary Background */
+  --color-bg-hover: #f2f3f4;          /* Facebook Hover Background */
+  --color-bg-active: #e7f3ff;         /* Facebook Active Background (Light Blue) */
+  --color-bg-disabled: #f5f6f7;       /* Facebook Disabled Background */
+  --color-bg-overlay: rgba(255, 255, 255, 0.8); /* Facebook Overlay */
+
+  /* === BORDER COLORS (Facebook Borders) === */
+  --color-border-primary: #dadde1;    /* Facebook Primary Border */
+  --color-border-secondary: #ced0d4;  /* Facebook Secondary Border */
+  --color-border-light: #e5e7eb;      /* Facebook Light Border */
+  --color-border-focus: #1877f2;      /* Facebook Focus Border (Blue) */
+  --color-border-error: #e74c3c;      /* Facebook Error Border */
+
+  /* === SURFACE COLORS (Facebook Surfaces) === */
+  --color-surface-raised: #ffffff;    /* Facebook Cards, Modals */
+  --color-surface-sunken: #f7f8fa;    /* Facebook Input Fields */
+  --color-surface-wash: #f0f2f5;      /* Facebook Background Wash */
+
+  /* === INTERACTION COLORS (Facebook Interactive Elements) === */
+  --color-link: #1877f2;              /* Facebook Links */
+  --color-link-hover: #166fe5;        /* Facebook Links Hover */
+  --color-link-visited: #8b2bae;      /* Facebook Visited Links (Purple) */
+  --color-accent: #ff6b35;            /* Facebook Accent (Orange) */
+  --color-highlight: #fff3cd;         /* Facebook Highlight */
+
+  /* === SHADOW COLORS (Facebook Shadows) === */
+  --color-shadow-light: rgba(0, 0, 0, 0.1);    /* Facebook Light Shadow */
+  --color-shadow-medium: rgba(0, 0, 0, 0.15);  /* Facebook Medium Shadow */
+  --color-shadow-heavy: rgba(0, 0, 0, 0.24);   /* Facebook Heavy Shadow */
+
+  /* === DARK MODE COLORS (Facebook Dark Mode) === */
+  --color-dark-bg-primary: #18191a;   /* Facebook Dark Main Background */
+  --color-dark-bg-secondary: #242526; /* Facebook Dark Secondary Background */
+  --color-dark-bg-tertiary: #3a3b3c;  /* Facebook Dark Tertiary Background */
+  --color-dark-text-primary: #e4e6ea; /* Facebook Dark Primary Text */
+  --color-dark-text-secondary: #b0b3b8; /* Facebook Dark Secondary Text */
+  --color-dark-border: #393a3b;       /* Facebook Dark Border */
+  --color-dark-hover: #4e4f50;        /* Facebook Dark Hover */
+
+  /* === SEMANTIC VARIANTS (Facebook Status Colors) === */
+  --color-online: #42b883;            /* Facebook Online Status (Green) */
+  --color-away: #f59e0b;              /* Facebook Away Status (Amber) */
+  --color-busy: #e74c3c;              /* Facebook Busy Status (Red) */
+  --color-offline: #9ca3af;           /* Facebook Offline Status (Gray) */
+
+  /* === NOTIFICATION COLORS (Facebook Notifications) === */
+  --color-notification: #e41e3f;      /* Facebook Notification Badge */
+  --color-message: #00d4aa;           /* Facebook Message Indicator */
+  --color-story: #ff6b35;             /* Facebook Story Ring */
+}
+
+/* === FACEBOOK-STYLE UTILITY CLASSES === */
+.text-primary { color: var(--color-primary); }
+.text-secondary { color: var(--color-secondary); }
+.bg-primary { background-color: var(--color-primary); }
+.bg-secondary { background-color: var(--color-secondary); }
+.border-primary { border-color: var(--color-primary); }
+
+/* === FACEBOOK-STYLE COMPONENT CLASSES === */
+.btn-primary {
+  background-color: var(--color-primary);
+  color: var(--color-text-white);
+  border: 1px solid var(--color-primary);
+  border-radius: 0.5rem;
+  padding: 0.5rem 1rem;
+  font-weight: 600;
+  transition: all 0.2s ease-in-out;
+}
+
+.btn-primary:hover {
+  background-color: var(--color-primary-hover);
+  border-color: var(--color-primary-hover);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px var(--color-shadow-medium);
+}
+
+.btn-secondary {
+  background-color: var(--color-secondary);
+  color: var(--color-text-white);
+  border: 1px solid var(--color-secondary);
+  border-radius: 0.5rem;
+  padding: 0.5rem 1rem;
+  font-weight: 600;
+  transition: all 0.2s ease-in-out;
+}
+
+.btn-secondary:hover {
+  background-color: var(--color-secondary-hover);
+  border-color: var(--color-secondary-hover);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px var(--color-shadow-medium);
+}
+
+.card {
+  background-color: var(--color-surface-raised);
+  border: 1px solid var(--color-border-secondary);
+  border-radius: 0.75rem;
+  box-shadow: 0 2px 4px var(--color-shadow-light);
+  transition: box-shadow 0.2s ease-in-out;
+}
+
+.card:hover {
+  box-shadow: 0 4px 12px var(--color-shadow-medium);
+}
+
+/* === FACEBOOK-STYLE INPUT COMPONENTS === */
+.input-field {
+  background-color: var(--color-surface-sunken);
+  border: 1px solid var(--color-border-primary);
+  border-radius: 0.5rem;
+  padding: 0.75rem 1rem;
+  color: var(--color-text-primary);
+  transition: all 0.2s ease-in-out;
+}
+
+.input-field:focus {
+  outline: none;
+  border-color: var(--color-border-focus);
+  box-shadow: 0 0 0 2px rgba(24, 119, 242, 0.2);
+}
+
+.input-field::placeholder {
+  color: var(--color-text-placeholder);
+}
+
+/* === FACEBOOK-STYLE NAVIGATION === */
+.nav-item {
+  color: var(--color-text-secondary);
+  padding: 0.5rem 1rem;
+  border-radius: 0.5rem;
+  transition: all 0.2s ease-in-out;
+  text-decoration: none;
+}
+
+.nav-item:hover {
+  background-color: var(--color-bg-hover);
+  color: var(--color-text-primary);
+}
+
+.nav-item.active {
+  color: var(--color-primary);
+  background-color: var(--color-bg-active);
+}
+
+/* === FACEBOOK-STYLE BADGES === */
+.badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.25rem 0.5rem;
+  border-radius: 9999px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.025em;
+}
+
+.badge-primary {
+  background-color: var(--color-primary);
+  color: var(--color-text-white);
+}
+
+.badge-success {
+  background-color: var(--color-success);
+  color: var(--color-text-white);
+}
+
+.badge-warning {
+  background-color: var(--color-warning);
+  color: var(--color-text-primary);
+}
+
+.badge-danger {
+  background-color: var(--color-danger);
+  color: var(--color-text-white);
+}
+/* === HELP SECTION SPECIFIC STYLES === */
+.help-section-title {
+  font-size: 1.5rem;
+  font-weight: 700;
+  margin-bottom: 0.5rem;
+  color: var(--color-text-primary);
+}
+
+.help-section-description {
+  color: var(--color-text-secondary);
+}
+
+/* === ENHANCED BUTTON STYLES === */
+.btn-secondary-custom {
+  background-color: var(--color-secondary);
+  color: var(--color-text-white);
+  border: 1px solid var(--color-secondary);
+  border-radius: 0.5rem;
+  padding: 0.5rem 1rem;
+  font-weight: 600;
+  transition: all 0.2s ease-in-out;
+  cursor: pointer;
+}
+
+.btn-secondary-custom:hover {
+  background-color: var(--color-secondary-hover);
+  border-color: var(--color-secondary-hover);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px var(--color-shadow-medium);
+}
+
+.btn-danger-custom {
+  background-color: var(--color-danger);
+  color: var(--color-text-white);
+  border: 1px solid var(--color-danger);
+  border-radius: 0.5rem;
+  padding: 0.5rem 1rem;
+  font-weight: 600;
+  transition: all 0.2s ease-in-out;
+  cursor: pointer;
+}
+
+.btn-danger-custom:hover {
+  background-color: #c0392b;
+  border-color: #c0392b;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px var(--color-shadow-medium);
+}

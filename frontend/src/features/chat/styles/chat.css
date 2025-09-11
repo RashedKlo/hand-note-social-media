@@ -1,0 +1,258 @@
+/* features/chat/styles/chat.css */
+
+/* Custom scrollbar styles */
+.chat-scrollbar::-webkit-scrollbar {
+  width: 4px;
+}
+
+.chat-scrollbar::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.chat-scrollbar::-webkit-scrollbar-thumb {
+  background: rgba(0, 0, 0, 0.2);
+  border-radius: 2px;
+}
+
+.chat-scrollbar::-webkit-scrollbar-thumb:hover {
+  background: rgba(0, 0, 0, 0.3);
+}
+
+/* Smooth transitions */
+.chat-transition {
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Message bubble animations */
+.message-bubble {
+  animation: slideInMessage 0.3s ease-out;
+}
+
+@keyframes slideInMessage {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Reaction picker animation */
+.reaction-picker {
+  animation: scaleIn 0.2s ease-out;
+}
+
+@keyframes scaleIn {
+  from {
+    opacity: 0;
+    transform: scale(0.8);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+/* Emoji picker animation */
+.emoji-picker {
+  animation: slideUp 0.2s ease-out;
+}
+
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Profile sidebar slide animation */
+.profile-sidebar {
+  animation: slideInRight 0.3s ease-out;
+}
+
+@keyframes slideInRight {
+  from {
+    opacity: 0;
+    transform: translateX(100%);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+/* Mobile-specific styles */
+@media (max-width: 768px) {
+  .mobile-full-height {
+    height: 100vh;
+    height: 100dvh; /* Dynamic viewport height for mobile browsers */
+  }
+  
+  .mobile-keyboard-adjust {
+    height: calc(100vh - env(keyboard-inset-height, 0px));
+    height: calc(100dvh - env(keyboard-inset-height, 0px));
+  }
+}
+
+/* Touch-friendly button sizes */
+.touch-target {
+  min-width: 44px;
+  min-height: 44px;
+}
+
+/* Focus states for accessibility */
+.focus-ring:focus {
+  outline: 2px solid #3b82f6;
+  outline-offset: 2px;
+}
+
+/* Loading states */
+.loading-pulse {
+  animation: pulse 1.5s ease-in-out infinite;
+}
+
+@keyframes pulse {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.5;
+  }
+}
+
+/* Typing indicator animation */
+.typing-dots {
+  display: inline-flex;
+  align-items: center;
+}
+
+.typing-dots::after {
+  content: '';
+  display: inline-block;
+  width: 4px;
+  height: 4px;
+  border-radius: 50%;
+  background: currentColor;
+  animation: typingDots 1.4s infinite ease-in-out;
+  margin-left: 4px;
+}
+
+.typing-dots::before {
+  content: '';
+  display: inline-block;
+  width: 4px;
+  height: 4px;
+  border-radius: 50%;
+  background: currentColor;
+  animation: typingDots 1.4s infinite ease-in-out 0.2s;
+  margin-right: 4px;
+}
+
+@keyframes typingDots {
+  0%, 60%, 100% {
+    transform: translateY(0);
+    opacity: 0.4;
+  }
+  30% {
+    transform: translateY(-10px);
+    opacity: 1;
+  }
+}
+
+/* Custom input styles */
+.message-input {
+  resize: none;
+  min-height: 40px;
+  max-height: 120px;
+  line-height: 1.4;
+  padding: 8px 12px;
+}
+
+.message-input:focus {
+  box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.5);
+}
+
+/* Responsive text sizes */
+@media (max-width: 640px) {
+  .text-responsive {
+    font-size: 14px;
+  }
+}
+
+@media (min-width: 641px) {
+  .text-responsive {
+    font-size: 16px;
+  }
+}
+
+/* Avatar online indicator */
+.avatar-online::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  width: 12px;
+  height: 12px;
+  background: #10b981;
+  border: 2px solid white;
+  border-radius: 50%;
+}
+
+/* Message status indicators */
+.message-sending {
+  opacity: 0.6;
+}
+
+.message-failed {
+  opacity: 0.4;
+}
+
+.message-failed::after {
+  content: '⚠️';
+  margin-left: 4px;
+  font-size: 12px;
+}
+
+/* Hover effects */
+.hover-lift:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+/* Dark mode support */
+@media (prefers-color-scheme: dark) {
+  .chat-dark {
+    background: #1f2937;
+    color: #f9fafb;
+  }
+  
+  .chat-dark .bg-white {
+    background: #374151;
+  }
+  
+  .chat-dark .bg-gray-50 {
+    background: #1f2937;
+  }
+  
+  .chat-dark .bg-gray-100 {
+    background: #4b5563;
+  }
+  
+  .chat-dark .text-gray-900 {
+    color: #f9fafb;
+  }
+  
+  .chat-dark .text-gray-600 {
+    color: #d1d5db;
+  }
+  
+  .chat-dark .border-gray-200 {
+    border-color: #4b5563;
+  }
+}

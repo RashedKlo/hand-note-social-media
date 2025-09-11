@@ -1,0 +1,34 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.0.31903.59
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HandNote.Api", "HandNote.Api\HandNote.Api.csproj", "{A5D31534-070C-4976-B4F9-CEE13961686C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HandNote.Services", "HandNote.Services\HandNote.Services.csproj", "{4F5427D1-E955-4092-8702-43A47A13D4C1}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HandNote.Data", "HandNote.Data\HandNote.Data.csproj", "{9586EFCB-EB0C-464A-8B18-046E0B9FFCC4}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{A5D31534-070C-4976-B4F9-CEE13961686C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A5D31534-070C-4976-B4F9-CEE13961686C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A5D31534-070C-4976-B4F9-CEE13961686C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A5D31534-070C-4976-B4F9-CEE13961686C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4F5427D1-E955-4092-8702-43A47A13D4C1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4F5427D1-E955-4092-8702-43A47A13D4C1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4F5427D1-E955-4092-8702-43A47A13D4C1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4F5427D1-E955-4092-8702-43A47A13D4C1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9586EFCB-EB0C-464A-8B18-046E0B9FFCC4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9586EFCB-EB0C-464A-8B18-046E0B9FFCC4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9586EFCB-EB0C-464A-8B18-046E0B9FFCC4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9586EFCB-EB0C-464A-8B18-046E0B9FFCC4}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+EndGlobal

@@ -1,0 +1,6 @@
+@HandNote.Api_HostAddress = http://localhost:5063
+
+GET {{HandNote.Api_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
