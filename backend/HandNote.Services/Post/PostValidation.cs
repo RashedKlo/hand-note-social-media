@@ -105,7 +105,7 @@ namespace HandNote.Services.Post
         /// </summary>
         private static OperationResult<bool> ValidateTextPostRules(PostCreateRequestDto dto, ILogger logger)
         {
-            if (string.IsNullOrWhiteSpace(dto.Content) && dto.HasMedia != true)
+            if (string.IsNullOrWhiteSpace(dto.Content) && dto.HasMedia != true && dto.MediaFilesID == null)
             {
                 logger.LogWarning("Text post has no content and no media for UserId: {UserId}", dto.UserId);
                 return OperationResult<bool>.Failure("Text posts must have content or media");
@@ -126,7 +126,7 @@ namespace HandNote.Services.Post
         /// </summary>
         private static OperationResult<bool> ValidateMediaPostRules(PostCreateRequestDto dto, ILogger logger)
         {
-            if (dto.HasMedia != true)
+            if (dto.HasMedia != true || dto.MediaFilesID == null)
             {
                 logger.LogWarning("Media post has no media for UserId: {UserId}", dto.UserId);
                 return OperationResult<bool>.Failure("Media posts must have media (HasMedia = true)");
@@ -155,7 +155,11 @@ namespace HandNote.Services.Post
                 logger.LogWarning("Shared post missing SharedPostId for UserId: {UserId}", dto.UserId);
                 return OperationResult<bool>.Failure("SharedPostId is required for shared post type");
             }
-
+            if (dto.MediaFilesID != null)
+            {
+                logger.LogWarning("Shared post has media for UserId: {UserId}", dto.UserId);
+                return OperationResult<bool>.Failure("Shared Post must be do not have media posts");
+            }
             logger.LogDebug("Validating shared post: {SharedPostId} for UserId: {UserId}",
                 dto.SharedPostId, dto.UserId);
 

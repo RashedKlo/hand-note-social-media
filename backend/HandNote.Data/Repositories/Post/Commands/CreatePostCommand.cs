@@ -74,7 +74,6 @@ namespace HandNote.Data.Repositories.Post.Commands
             command.AddParameter("@HasMedia", dto.HasMedia);
             command.AddParameter("@AllowsComments", dto.AllowsComments);
             command.AddParameter("@AllowsShares", dto.AllowsShares);
-
             return command;
         }
 

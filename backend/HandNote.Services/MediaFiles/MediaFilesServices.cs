@@ -9,7 +9,7 @@ using HandNote.Data.Results;
 
 namespace HandNote.Services.MediaFiles
 {
-    public sealed class MediaFilesService : IMediaFilesRepository
+    public class MediaFilesService : IMediaFilesRepository
     {
         private readonly IMediaFilesRepository _mediaFilesRepository;
         private readonly ILogger<MediaFilesService> _logger;
@@ -42,7 +42,7 @@ namespace HandNote.Services.MediaFiles
             }
 
             _logger.LogInformation("Media files created successfully - UserId: {UserId}, RecordsInserted: {RecordsInserted}",
-                createResult.Data?.UserId, createResult.Data?.RecordsInserted);
+                createResult.Data?.UserId, createResult.Data?.RecordsUpdated);
 
             return OperationResult<MediaFilesCreateResponseDto>.Success(createResult.Data!, createResult.Message);
         }

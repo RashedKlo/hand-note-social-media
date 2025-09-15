@@ -14,11 +14,7 @@ namespace HandNote.Data.DTOs.Post.Create
         public Models.Post? Post { get; set; }
 
         // Media Information
-        public List<MediaFileDto?> MediaFiles { get; set; } = [];
-
-        public int MediaCount { get; set; } = 0;
-
-
+        public List<string>? MediaFiles { get; set; } = [];
 
     }
 

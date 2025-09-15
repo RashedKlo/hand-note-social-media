@@ -12,16 +12,18 @@ namespace HandNote.Data.DTOs.Media_Files
         public int UserId { get; set; }
 
         [Required]
-        [Range(1, int.MaxValue, ErrorMessage = "Records inserted must be positive")]
-        public int RecordsInserted { get; set; }
+        [Range(0, int.MaxValue, ErrorMessage = "Records updated must be non-negative")]
+        public int RecordsUpdated { get; set; }
 
         [Required]
-        [Range(1, int.MaxValue, ErrorMessage = "Total file paths must be positive")]
-        public int TotalFilePaths { get; set; }
+        [Range(1, int.MaxValue, ErrorMessage = "Total media files must be positive")]
+        public int TotalMediaFiles { get; set; }
 
         [Required]
-        public DateTime CreatedAt { get; set; }
+        public DateTime UpdatedAt { get; set; }
 
-
+        [Required(ErrorMessage = "Updated media file IDs are required")]
+        [MinLength(1, ErrorMessage = "At least one media file ID is required")]
+        public required List<int> MediaFilesID { get; set; }
     }
 }

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
+using HandNote.Data.DTOs.Media_Files;
 
 namespace HandNote.Data.DTOs.Post.Create
 {
@@ -27,6 +28,8 @@ namespace HandNote.Data.DTOs.Post.Create
         public bool AllowsComments { get; set; } = true;
 
         public bool AllowsShares { get; set; } = true;
+
+        public List<int>? MediaFilesID { get; set; } = null;
 
     }
 }

@@ -109,10 +109,10 @@ namespace HandNote.Data.Repositories.Media_Files.Commands
             }
             else
             {
-                var response = MediaFilesMapper.MapCreateResponseFromReader(reader);
+                var response = await MediaFilesMapper.MapCreateResponseFromReader(reader);
 
                 logger.LogInformation("Media files created successfully - UserId: {UserId}, RecordsInserted: {RecordsInserted}",
-                    response.UserId, response.RecordsInserted);
+                    response.UserId, response.RecordsUpdated);
 
                 return OperationResult<MediaFilesCreateResponseDto>.Success(response, "Media files created successfully");
             }
