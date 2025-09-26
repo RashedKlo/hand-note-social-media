@@ -1,0 +1,22 @@
+CREATE TABLE notifications (
+    notification_id INT IDENTITY(1,1) PRIMARY KEY,
+    recipient_id INT NOT NULL,
+    actor_id INT NULL,
+    notification_type NVARCHAR(20) NOT NULL,
+    target_type NVARCHAR(20) NULL,
+    target_id BIGINT NULL,
+    title NVARCHAR(50) NOT NULL,
+    message NVARCHAR(200) NULL,
+    is_read BIT NOT NULL DEFAULT 0,
+    read_at DATETIME2 NULL,
+    is_sent BIT NOT NULL DEFAULT 0,
+    sent_at DATETIME2 NULL,
+    expires_at DATETIME2 NULL,
+    created_at DATETIME2 NOT NULL DEFAULT GETDATE(),
+    updated_at DATETIME2 NULL DEFAULT GETDATE(),
+    CONSTRAINT FK_notifications_recipient FOREIGN KEY (recipient_id) REFERENCES users(user_id),
+    CONSTRAINT FK_notifications_actor FOREIGN KEY (actor_id) REFERENCES users(user_id),
+    CONSTRAINT CK_notifications_title_not_empty CHECK (LEN(TRIM(title)) >= 3),
+    CONSTRAINT CK_notifications_title_length CHECK (LEN(TRIM(title)) <= 50),
+    CONSTRAINT CK_notifications_message_reasonable CHECK (message IS NULL OR LEN(TRIM(message)) <= 200)
+);
