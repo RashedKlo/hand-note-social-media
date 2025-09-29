@@ -1,6 +1,7 @@
 // FriendshipValidation.cs
 using System.Threading.Tasks;
 using HandNote.Data.DTOs.Friendship.Create;
+using HandNote.Data.DTOs.Friendship.Queries;
 using HandNote.Data.DTOs.Friendship.Update;
 using HandNote.Data.Interfaces;
 using HandNote.Data.Results;
@@ -88,8 +89,64 @@ public static class FriendshipValidation
         // user permissions and status transitions properly
 
         logger.LogDebug("Friendship status update validation passed for FriendshipId: {FriendshipId}, UserId: {UserId}",
-            dto.FriendshipId, dto.UserId);
+             dto.FriendshipId, dto.UserId);
 
         return OperationResult<bool>.Success(true, "Validation passed");
     }
+
+
+    public static Task<OperationResult<bool>> ValidateGetFriendRequestsAsync(
+        GetFriendRequestsRequestDto dto,
+        ILogger logger)
+    {
+        if (dto.UserId <= 0)
+            return Task.FromResult(OperationResult<bool>.Failure("UserId must be a positive integer"));
+
+        if (dto.Page <= 0)
+            return Task.FromResult(OperationResult<bool>.Failure("Page must be a positive integer"));
+
+        if (dto.Limit <= 0 || dto.Limit > 100)
+            return Task.FromResult(OperationResult<bool>.Failure("Limit must be between 1 and 100"));
+
+        logger.LogDebug("Friend requests validation passed for UserId {UserId}", dto.UserId);
+        return Task.FromResult(OperationResult<bool>.Success(true, "Validation passed"));
+    }
+
+    public static Task<OperationResult<bool>> ValidateGetUserFriendsAsync(
+        GetUserFriendsRequestDto dto,
+        ILogger logger)
+    {
+        if (dto.UserId <= 0)
+            return Task.FromResult(OperationResult<bool>.Failure("UserId must be a positive integer"));
+
+        if (dto.Page <= 0)
+            return Task.FromResult(OperationResult<bool>.Failure("Page must be a positive integer"));
+
+        if (dto.Limit <= 0 || dto.Limit > 100)
+            return Task.FromResult(OperationResult<bool>.Failure("Limit must be between 1 and 100"));
+
+        logger.LogDebug("Get user friends validation passed for UserId {UserId}", dto.UserId);
+        return Task.FromResult(OperationResult<bool>.Success(true, "Validation passed"));
+    }
+
+    public static Task<OperationResult<bool>> ValidateSearchUserFriendsAsync(
+        SearchUserFriendsRequestDto dto,
+        ILogger logger)
+    {
+        if (dto.UserId <= 0)
+            return Task.FromResult(OperationResult<bool>.Failure("UserId must be a positive integer"));
+
+        if (!string.IsNullOrWhiteSpace(dto.Filter) && dto.Filter.Length > 200)
+            return Task.FromResult(OperationResult<bool>.Failure("Filter must not exceed 200 characters"));
+
+        if (dto.Page <= 0)
+            return Task.FromResult(OperationResult<bool>.Failure("Page must be a positive integer"));
+
+        if (dto.Limit <= 0 || dto.Limit > 100)
+            return Task.FromResult(OperationResult<bool>.Failure("Limit must be between 1 and 100"));
+
+        logger.LogDebug("Search user friends validation passed for UserId {UserId}, Filter {Filter}", dto.UserId, dto.Filter);
+        return Task.FromResult(OperationResult<bool>.Success(true, "Validation passed"));
+    }
+
 }

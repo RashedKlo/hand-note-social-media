@@ -6,10 +6,9 @@ using HandNote.Data.Models;
 
 namespace HandNote.Data.DTOs.Friendship.Queries
 {
-  
-    public class GetUserFriendsResponseDto
+ public class GetFriendRequestsResponseDto
     {
-        public List<FriendDto> Friends { get; set; } = new List<FriendDto>();
+        public List<FriendRequestDto> FriendRequests { get; set; } = new List<FriendRequestDto>();
         public int TotalCount { get; set; }
         public int CurrentPage { get; set; }
         public int PageSize { get; set; }
