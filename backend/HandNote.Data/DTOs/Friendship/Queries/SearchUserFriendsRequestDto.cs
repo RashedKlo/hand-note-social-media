@@ -6,11 +6,14 @@ using System.Threading.Tasks;
 
 namespace HandNote.Data.DTOs.Friendship.Queries
 {
-   public class GetUserFriendsRequestDto
+  public class SearchUserFriendsRequestDto
     {
         [Required(ErrorMessage = "UserId is required.")]
         [Range(1, int.MaxValue, ErrorMessage = "UserId must be a positive integer.")]
         public int UserId { get; set; }
+
+        [StringLength(200, ErrorMessage = "Filter must not exceed 200 characters.")]
+        public string? Filter { get; set; }
 
         [Range(1, int.MaxValue, ErrorMessage = "Page must be a positive integer.")]
         public int Page { get; set; } = 1;

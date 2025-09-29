@@ -10,24 +10,24 @@ using Microsoft.Extensions.Logging;
 
 namespace HandNote.Data.Repositories.Friendship.Queries
 {
-    public class GetUserFriendsQuery
+    public class SearchUserFriendsQuery
     {
-        private const string GetUserFriendsSql = @"
-            EXEC [dbo].[sp_GetUserFriends] 
-                @UserId, @Page, @Limit";
+        private const string SearchUserFriendsSql = @"
+            EXEC [dbo].[sp_SearchUserFriends] 
+                @UserId, @Filter, @Page, @Limit";
 
-        public static async Task<OperationResult<GetUserFriendsResponseDto>> ExecuteAsync(
-            GetUserFriendsRequestDto dto,
+        public static async Task<OperationResult<SearchUserFriendsResponseDto>> ExecuteAsync(
+            SearchUserFriendsRequestDto dto,
             ILogger logger)
         {
             if (dto == null)
             {
-                logger.LogError("GetUserFriendsQuery received null data");
-                return OperationResult<GetUserFriendsResponseDto>.Failure("Request data is required");
+                logger.LogError("SearchUserFriendsQuery received null data");
+                return OperationResult<SearchUserFriendsResponseDto>.Failure("Request data is required");
             }
 
-            logger.LogInformation("Executing get user friends for UserId: {UserId}, Page: {Page}, Limit: {Limit}",
-                dto.UserId, dto.Page, dto.Limit);
+            logger.LogInformation("Executing search user friends for UserId: {UserId}, Filter: {Filter}, Page: {Page}, Limit: {Limit}",
+                dto.UserId, dto.Filter, dto.Page, dto.Limit);
 
             try
             {
@@ -41,39 +41,40 @@ namespace HandNote.Data.Repositories.Friendship.Queries
             }
             catch (SqlException ex) when (ex.Number is 2 or 53)
             {
-                logger.LogError(ex, "Database connection failed during get user friends for UserId {UserId}",
+                logger.LogError(ex, "Database connection failed during search user friends for UserId {UserId}",
                     dto.UserId);
-                return OperationResult<GetUserFriendsResponseDto>.Failure("Database connection failed. Please try again.");
+                return OperationResult<SearchUserFriendsResponseDto>.Failure("Database connection failed. Please try again.");
             }
             catch (SqlException ex)
             {
-                logger.LogError(ex, "Database error during get user friends for UserId {UserId}. Error: {Error}",
+                logger.LogError(ex, "Database error during search user friends for UserId {UserId}. Error: {Error}",
                     dto.UserId, ex.Message);
-                return OperationResult<GetUserFriendsResponseDto>.Failure("Database operation failed");
+                return OperationResult<SearchUserFriendsResponseDto>.Failure("Database operation failed");
             }
             catch (Exception ex)
             {
-                logger.LogError(ex, "Unexpected error during get user friends for UserId {UserId}",
+                logger.LogError(ex, "Unexpected error during search user friends for UserId {UserId}",
                     dto.UserId);
-                return OperationResult<GetUserFriendsResponseDto>.Failure("Get user friends failed due to system error");
+                return OperationResult<SearchUserFriendsResponseDto>.Failure("Search user friends failed due to system error");
             }
         }
 
-        private static SqlCommand CreateCommand(SqlConnection connection, GetUserFriendsRequestDto dto)
+        private static SqlCommand CreateCommand(SqlConnection connection, SearchUserFriendsRequestDto dto)
         {
-            var command = new SqlCommand(GetUserFriendsSql, connection);
+            var command = new SqlCommand(SearchUserFriendsSql, connection);
             command.AddParameter("@UserId", dto.UserId);
+            command.AddParameter("@Filter", dto.Filter);
             command.AddParameter("@Page", dto.Page);
             command.AddParameter("@Limit", dto.Limit);
             return command;
         }
 
-        private static async Task<OperationResult<GetUserFriendsResponseDto>> ProcessResultAsync(
+        private static async Task<OperationResult<SearchUserFriendsResponseDto>> ProcessResultAsync(
             SqlDataReader reader,
             ILogger logger,
             int userId)
         {
-            var response = new GetUserFriendsResponseDto();
+            var response = new SearchUserFriendsResponseDto();
             var friends = new List<FriendDto>();
 
             while (await reader.ReadAsync())
@@ -82,11 +83,11 @@ namespace HandNote.Data.Repositories.Friendship.Queries
                 
                 if (status != "SUCCESS")
                 {
-                    var errorMessage = reader.GetValueOrDefault<string>("ErrorMessage") ?? "Get user friends failed";
+                    var errorMessage = reader.GetValueOrDefault<string>("ErrorMessage") ?? "Search user friends failed";
                     var errorNumber = reader.GetValueOrDefault<int?>("ErrorNumber");
-                    logger.LogWarning("Get user friends failed for UserId {UserId}: {Message} (Error: {ErrorNumber})",
+                    logger.LogWarning("Search user friends failed for UserId {UserId}: {Message} (Error: {ErrorNumber})",
                         userId, errorMessage, errorNumber);
-                    return OperationResult<GetUserFriendsResponseDto>.Failure(errorMessage);
+                    return OperationResult<SearchUserFriendsResponseDto>.Failure(errorMessage);
                 }
 
                 friends.Add(new FriendDto
@@ -110,10 +111,10 @@ namespace HandNote.Data.Repositories.Friendship.Queries
 
             response.Friends = friends;
 
-            logger.LogInformation("User friends retrieved successfully - UserId: {UserId}, Count: {Count}",
+            logger.LogInformation("User friends search completed successfully - UserId: {UserId}, Count: {Count}",
                 userId, friends.Count);
 
-            return OperationResult<GetUserFriendsResponseDto>.Success(response, "User friends retrieved successfully");
+            return OperationResult<SearchUserFriendsResponseDto>.Success(response, "User friends search completed successfully");
         }
     }
 }

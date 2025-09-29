@@ -3,6 +3,7 @@ using System.Threading.Tasks;
 using HandNote.Data.DTOs.Friendship;
 using HandNote.Data.DTOs.Friendship.Update;
 using HandNote.Data.Helpers;
+using HandNote.Data.Models;
 using HandNote.Data.Repositories.Friendship.Helpers;
 using HandNote.Data.Results;
 using HandNote.Data.Settings;
@@ -38,7 +39,7 @@ namespace HandNote.Data.Repositories.Friendship.Commands
                 using var command = CreateCommand(connection, dto);
                 using var reader = await command.ExecuteReaderAsync();
 
-                return await ProcessResultAsync(reader, logger, dto.FriendshipId, dto.UserId, dto.NewStatus);
+                return await ProcessResultAsync(reader, logger, dto);
             }
             catch (SqlException ex) when (ex.Number is 2 or 53)
             {
@@ -65,21 +66,19 @@ namespace HandNote.Data.Repositories.Friendship.Commands
             var command = new SqlCommand(UpdateFriendSql, connection);
             command.AddParameter("@FriendshipId", dto.FriendshipId);
             command.AddParameter("@UserId", dto.UserId);
-            command.AddParameter("@NewStatus", dto.NewStatus);
+            command.AddParameter("@NewStatus", FriendshipUtils.GetStatus(dto.NewStatus));
             return command;
         }
 
         private static async Task<OperationResult<FriendshipUpdateResponseDto>> ProcessResultAsync(
             SqlDataReader reader,
             ILogger logger,
-            int friendshipId,
-            int userId,
-            string newStatus)
+            FriendshipUpdateRequestDto dto)
         {
             if (!await reader.ReadAsync())
             {
                 logger.LogWarning("No result returned from friendship status update procedure for FriendshipId {FriendshipId}, UserId {UserId}",
-                    friendshipId, userId);
+                    dto.FriendshipId, dto.UserId);
                 return OperationResult<FriendshipUpdateResponseDto>.Failure("Friendship status update procedure returned no result");
             }
 
@@ -90,7 +89,7 @@ namespace HandNote.Data.Repositories.Friendship.Commands
             {
                 var errorNumber = reader.GetValueOrDefault<int>("ErrorNumber");
                 logger.LogWarning("Friendship status update failed for FriendshipId {FriendshipId}, UserId {UserId}: {Message} (Error: {ErrorNumber})",
-                    friendshipId, userId, message, errorNumber);
+                    dto.FriendshipId, dto.UserId, message, errorNumber);
                 return OperationResult<FriendshipUpdateResponseDto>.Failure(message);
             }
             else
@@ -100,14 +99,14 @@ namespace HandNote.Data.Repositories.Friendship.Commands
                     var responseDto = FriendshipMapper.MapUpdateResponseFromReader(reader);
 
                     logger.LogInformation("Friendship status updated successfully - FriendshipId: {FriendshipId}, UserId: {UserId}, NewStatus: {NewStatus}",
-                        friendshipId, userId, newStatus);
+                        dto.FriendshipId, dto.UserId, FriendshipUtils.GetStatus(dto.NewStatus));
 
                     return OperationResult<FriendshipUpdateResponseDto>.Success(responseDto, message);
                 }
                 catch (Exception ex)
                 {
                     logger.LogError(ex, "Error mapping friendship status update result for FriendshipId {FriendshipId}, UserId {UserId}",
-                        friendshipId, userId);
+                        dto.FriendshipId, dto.UserId);
                     return OperationResult<FriendshipUpdateResponseDto>.Failure("Failed to process friendship status update result");
                 }
             }

@@ -2,12 +2,10 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using HandNote.Data.Models;
 
 namespace HandNote.Data.DTOs.Friendship.Queries
 {
-  
-    public class GetUserFriendsResponseDto
+   public class SearchUserFriendsResponseDto
     {
         public List<FriendDto> Friends { get; set; } = new List<FriendDto>();
         public int TotalCount { get; set; }

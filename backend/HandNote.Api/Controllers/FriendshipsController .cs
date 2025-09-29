@@ -196,18 +196,68 @@ namespace HandNote.Api.Controllers
 
             return Ok(new SuccessResponse<FriendshipExistenceResponseDto>(result.Data!, result.Message));
         }
+ /// <summary>
+        /// Get pending friend requests for a user
+        /// </summary>
+        /// <param name="userId">The ID of the user</param>
+        /// <param name="page">Page number (default: 1)</param>
+        /// <param name="limit">Items per page (default: 10, max: 100)</param>
+        /// <returns>List of pending friend requests</returns>
+        [HttpGet("{userId}/requests")]
+        [AllowAnonymous] // For testing - remove in production
+        public async Task<ActionResult<SuccessResponse<GetFriendRequestsResponseDto>>> GetFriendRequests(
+            [FromRoute] int userId,
+            [FromQuery] int page = 1,
+            [FromQuery] int limit = 10)
+        {
+            _logger.LogInformation("GetFriendRequests request for UserId: {UserId}, Page: {Page}, Limit: {Limit}",
+                userId, page, limit);
+
+            var request = new GetFriendRequestsRequestDto
+            {
+                UserId = userId,
+                Page = page,
+                Limit = limit
+            };
+
+            var result = await _friendshipService.GetFriendRequestsAsync(request);
+
+            if (!result.IsSuccess)
+            {
+                _logger.LogWarning("GetFriendRequests failed: {Message}", result.Message);
+                return BadRequest(new ErrorResponse(result.Message, result.Errors.ToList()));
+            }
+
+            _logger.LogInformation("Friend requests retrieved successfully - UserId: {UserId}, Count: {Count}",
+                userId, result.Data?.FriendRequests?.Count ?? 0);
+
+            return Ok(new SuccessResponse<GetFriendRequestsResponseDto>(result.Data!, result.Message));
+        }
 
         /// <summary>
-        /// Get user's friends list
+        /// Get all friends for a user
         /// </summary>
-        [HttpGet("{UserId}/friends")]
+        /// <param name="userId">The ID of the user</param>
+        /// <param name="page">Page number (default: 1)</param>
+        /// <param name="limit">Items per page (default: 10, max: 100)</param>
+        /// <returns>List of friends</returns>
+        [HttpGet("{userId}/friends")]
         [AllowAnonymous] // For testing - remove in production
-        public async Task<ActionResult<SuccessResponse<List<UserFriendsGetResponseDto>>>> GetUserFriends(
-            [FromRoute] int UserId)
+        public async Task<ActionResult<SuccessResponse<GetUserFriendsResponseDto>>> GetUserFriends(
+            [FromRoute] int userId,
+            [FromQuery] int page = 1,
+            [FromQuery] int limit = 10)
         {
-            _logger.LogInformation("GetUserFriends initiated for UserId: {UserId}", UserId);
+            _logger.LogInformation("GetUserFriends request for UserId: {UserId}, Page: {Page}, Limit: {Limit}",
+                userId, page, limit);
 
-            var request = new UserFriendsGetRequestDto { UserId = UserId };
+            var request = new GetUserFriendsRequestDto
+            {
+                UserId = userId,
+                Page = page,
+                Limit = limit
+            };
+
             var result = await _friendshipService.GetUserFriendsAsync(request);
 
             if (!result.IsSuccess)
@@ -216,10 +266,52 @@ namespace HandNote.Api.Controllers
                 return BadRequest(new ErrorResponse(result.Message, result.Errors.ToList()));
             }
 
-            _logger.LogInformation("User friends retrieved successfully - Count: {FriendsCount}",
-                result.Data?.Count ?? 0);
+            _logger.LogInformation("User friends retrieved successfully - UserId: {UserId}, Count: {Count}",
+                userId, result.Data?.Friends?.Count ?? 0);
 
-            return Ok(new SuccessResponse<List<UserFriendsGetResponseDto>>(result.Data!, result.Message));
+            return Ok(new SuccessResponse<GetUserFriendsResponseDto>(result.Data!, result.Message));
         }
+
+        /// <summary>
+        /// Search friends by name
+        /// </summary>
+        /// <param name="userId">The ID of the user</param>
+        /// <param name="filter">Search filter (name)</param>
+        /// <param name="page">Page number (default: 1)</param>
+        /// <param name="limit">Items per page (default: 10, max: 100)</param>
+        /// <returns>List of matching friends</returns>
+        [HttpGet("{userId}/friends/search")]
+        [AllowAnonymous] // For testing - remove in production
+        public async Task<ActionResult<SuccessResponse<SearchUserFriendsResponseDto>>> SearchUserFriends(
+            [FromRoute] int userId,
+            [FromQuery] string? filter = null,
+            [FromQuery] int page = 1,
+            [FromQuery] int limit = 10)
+        {
+            _logger.LogInformation("SearchUserFriends request for UserId: {UserId}, Filter: {Filter}, Page: {Page}, Limit: {Limit}",
+                userId, filter, page, limit);
+
+            var request = new SearchUserFriendsRequestDto
+            {
+                UserId = userId,
+                Filter = filter,
+                Page = page,
+                Limit = limit
+            };
+
+            var result = await _friendshipService.SearchUserFriendsAsync(request);
+
+            if (!result.IsSuccess)
+            {
+                _logger.LogWarning("SearchUserFriends failed: {Message}", result.Message);
+                return BadRequest(new ErrorResponse(result.Message, result.Errors.ToList()));
+            }
+
+            _logger.LogInformation("User friends search completed successfully - UserId: {UserId}, Count: {Count}",
+                userId, result.Data?.Friends?.Count ?? 0);
+
+            return Ok(new SuccessResponse<SearchUserFriendsResponseDto>(result.Data!, result.Message));
+        }
+    
     }
 }

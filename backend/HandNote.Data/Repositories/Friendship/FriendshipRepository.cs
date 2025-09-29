@@ -20,22 +20,44 @@ namespace HandNote.Data.Repositories.Friendship
         {
             this._logger = logger;
         }
-        public async Task<OperationResult<FriendshipCreateResponseDto>> AddFriendAsync(FriendshipCreateRequestDto dto)
+public async Task<OperationResult<FriendshipCreateResponseDto>> AddFriendAsync(FriendshipCreateRequestDto dto)
+{
+    _logger.LogInformation("Repository: Adding friend. RequesterId: {RequesterId}, AddresseeId: {AddresseeId}", dto.RequesterId, dto.AddresseeId);
+    return await AddFriendCommand.ExecuteAsync(dto, _logger);
+}
+
+public async Task<OperationResult<FriendshipUpdateResponseDto>> UpdateFriendAsync(FriendshipUpdateRequestDto dto)
+{
+    _logger.LogInformation("Repository: Updating friendship. FriendshipId: {FriendshipId}, Status: {Status}", dto.FriendshipId, dto.NewStatus);
+    return await UpdateFriendCommand.ExecuteAsync(dto, _logger);
+}
+
+public async Task<OperationResult<FriendshipExistenceResponseDto>> IsFriendshipExistedByID(FriendshipExistenceRequestDto dto)
+{
+    _logger.LogInformation("Repository: Checking if friendship exists. UserId1: {UserId1}, UserId2: {UserId2}", dto.UserId1, dto.UserId2);
+    return await IsFriendshipExistedByIDQuery.ExecuteAsync(dto, _logger);
+}
+
+          // New query methods
+        public async Task<OperationResult<GetFriendRequestsResponseDto>> GetFriendRequestsAsync(GetFriendRequestsRequestDto dto)
         {
-            return await AddFriendCommand.ExecuteAsync(dto, _logger);
+            _logger.LogInformation("Repository: Getting friend requests for UserId: {UserId}", dto.UserId);
+            return await GetFriendRequestsQuery.ExecuteAsync(dto, _logger);
         }
-        public async Task<OperationResult<FriendshipUpdateResponseDto>> UpdateFriendAsync(FriendshipUpdateRequestDto dto)
-        {
-            return await UpdateFriendCommand.ExecuteAsync(dto, _logger);
-        }
-        public async Task<OperationResult<FriendshipExistenceResponseDto>> IsFriendshipExistedByID(FriendshipExistenceRequestDto dto)
-        {
-            return await IsFriendshipExistedByIDQuery.ExecuteAsync(dto, _logger);
-        }
+
         public async Task<OperationResult<GetUserFriendsResponseDto>> GetUserFriendsAsync(GetUserFriendsRequestDto dto)
         {
+            _logger.LogInformation("Repository: Getting user friends for UserId: {UserId}", dto.UserId);
             return await GetUserFriendsQuery.ExecuteAsync(dto, _logger);
         }
+
+        public async Task<OperationResult<SearchUserFriendsResponseDto>> SearchUserFriendsAsync(SearchUserFriendsRequestDto dto)
+        {
+            _logger.LogInformation("Repository: Searching user friends for UserId: {UserId}, Filter: {Filter}", 
+                dto.UserId, dto.Filter);
+            return await SearchUserFriendsQuery.ExecuteAsync(dto, _logger);
+        }
+
 
     }
 }

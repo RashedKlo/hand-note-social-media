@@ -14,6 +14,9 @@ namespace HandNote.Data.Interfaces
         Task<OperationResult<FriendshipCreateResponseDto>> AddFriendAsync(FriendshipCreateRequestDto dto);
         Task<OperationResult<FriendshipUpdateResponseDto>> UpdateFriendAsync(FriendshipUpdateRequestDto dto);
         Task<OperationResult<FriendshipExistenceResponseDto>> IsFriendshipExistedByID(FriendshipExistenceRequestDto dto);
+       Task<OperationResult<GetFriendRequestsResponseDto>> GetFriendRequestsAsync(GetFriendRequestsRequestDto dto);
         Task<OperationResult<GetUserFriendsResponseDto>> GetUserFriendsAsync(GetUserFriendsRequestDto dto);
+        Task<OperationResult<SearchUserFriendsResponseDto>> SearchUserFriendsAsync(SearchUserFriendsRequestDto dto);
+
     }
 }

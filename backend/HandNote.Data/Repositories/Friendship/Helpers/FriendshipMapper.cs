@@ -58,27 +58,5 @@ namespace HandNote.Data.Repositories.Friendship.Helpers
             };
         }
 
-        public static UserFriendsResponseDto MapFriendsResponseFromReader(SqlDataReader reader)
-        {
-            if (reader == null)
-                throw new ArgumentNullException(nameof(reader));
-
-            return new UserFriendsResponseDto
-            {
-                FriendId = reader.GetValue<int>("FriendId"),
-                FriendUsername = reader.GetValue<string>("FriendUsername"),
-                FriendFirstName = reader.GetValue<string>("FriendFirstName"),
-                FriendLastName = reader.GetValue<string>("FriendLastName"),
-                FriendProfilePicture = reader.GetValueOrDefault<string>("FriendProfilePicture"),
-                ConversationId = reader.GetValueOrDefault<int?>("ConversationId"),
-                LastActivity = reader.GetValueOrDefault<DateTime?>("LastActivity"),
-                LastMessageContent = reader.GetValueOrDefault<string>("LastMessageContent"),
-                LastMessageTime = reader.GetValueOrDefault<DateTime?>("LastMessageTime"),
-                LastMessageSenderId = reader.GetValueOrDefault<int?>("LastMessageSenderId"),
-                IsLastMessageFromMe = reader.GetValueOrDefault<bool>("IsLastMessageFromMe"),
-                UnreadCount = reader.GetValueOrDefault<int>("UnreadCount")
-            };
-        }
-
     }
 }
