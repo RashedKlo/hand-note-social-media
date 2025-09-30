@@ -1,0 +1,21 @@
+CREATE TABLE messages (
+    message_id INT IDENTITY(1,1) PRIMARY KEY,
+    conversation_id INT NOT NULL,
+    sender_id INT NOT NULL,
+    content VARCHAR(MAX) NOT NULL,
+    message_type VARCHAR(10) NOT NULL DEFAULT 'text' CHECK (message_type IN ('text', 'image', 'file', 'system')),
+    sent_at DATETIME NOT NULL DEFAULT GETDATE(),
+    edited_at DATETIME NULL,
+    is_deleted BIT NOT NULL DEFAULT 0,
+    reply_to_message_id INT NULL,
+    is_read BIT NOT NULL DEFAULT 0,
+    read_at DATETIME NULL,
+    media_id INT NULL,
+    CONSTRAINT fk_msg_conversation FOREIGN KEY (conversation_id) REFERENCES conversations(id) ON DELETE CASCADE,
+    CONSTRAINT fk_msg_sender FOREIGN KEY (sender_id) REFERENCES users(user_id),
+    CONSTRAINT fk_msg_reply_to FOREIGN KEY (reply_to_message_id) REFERENCES messages(message_id),
+    CONSTRAINT fk_msg_media FOREIGN KEY (media_id) REFERENCES media_files(media_id),
+    CONSTRAINT chk_msg_read_at_after_sent CHECK (read_at IS NULL OR read_at >= sent_at),
+    CONSTRAINT chk_msg_edited_at_after_sent CHECK (edited_at IS NULL OR edited_at >= sent_at),
+    CONSTRAINT chk_msg_Content CHECK(LEN(TRIM(Content))>0)
+);
