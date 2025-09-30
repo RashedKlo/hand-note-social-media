@@ -1,2 +1,0 @@
-search friends() , Remove , send request , get friends,Accep,Decline,get requests(),logout() , get all sessions(), update user privacy(), update user(),get posts(),
-create post, like post ,share post , comment post , like comment, delete post,reply comment , delete comment , update comment , delete like comment , delete like post
