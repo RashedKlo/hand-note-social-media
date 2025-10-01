@@ -95,24 +95,6 @@ export const friendsApi = {
     return response.data;
   },
 
-  /**
-   * Check friendship status between two users
-   */
-  checkFriendshipStatus: async (userId1, userId2) => {
-    const response = await apiClient.post('/friendships/check', {
-      userId1,
-      userId2
-    });
-    return response.data;
-  },
 
-  /**
-   * Block user
-   */
-  blockUser: async (friendshipId, userId) => {
-    const response = await apiClient.put(`/friendships/${friendshipId}/block`, {
-      userId
-    });
-    return response.data;
-  }
+
 };
