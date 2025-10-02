@@ -1,17 +1,13 @@
 import { BellIcon, PaperAirplaneIcon, UsersIcon } from "@heroicons/react/24/outline";
-import { useState } from "react";
-import MainContent from "../Content/MainContent";
 
 const TABS_CONFIG = [
     { id: 'friends', label: 'All Friends', icon: UsersIcon },
     { id: 'received', label: 'Requests', icon: BellIcon },
-    { id: 'sent', label: 'Sent', icon: PaperAirplaneIcon },
 ];
 // Calculates total counts for the navigation tabs.
 const totalCounts = {
     friends: 12,
     received: 32,
-    sent: 50,
     total: 12 + 32 + 50,
 };
 // Adds dynamic counts to the tab configuration.
