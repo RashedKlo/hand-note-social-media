@@ -177,7 +177,7 @@ namespace HandNote.Api.Controllers
         /// <summary>
         /// Check if friendship exists
         /// </summary>
-        [HttpPost("check")]
+        [HttpGet("check")]
         [AllowAnonymous] // For testing - remove in production
         public async Task<ActionResult<SuccessResponse<FriendshipExistenceResponseDto>>> CheckFriendship(
             [FromBody] FriendshipExistenceRequestDto request)

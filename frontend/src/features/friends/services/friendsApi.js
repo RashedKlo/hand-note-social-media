@@ -52,6 +52,7 @@ export const friendsApi = {
     return response.data;
   },
 
+ feature/auth-friends-refactor
   /**
    * Check friendship status
    */
@@ -106,3 +107,7 @@ export const friendsApi = {
 };
 
 
+
+
+};
+ main
