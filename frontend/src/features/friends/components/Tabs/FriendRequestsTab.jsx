@@ -1,33 +1,45 @@
-import { useState } from "react";
 import GetEmptyStateContent from "../EmptyState/GetEmptyStateContent";
 import FriendRequestCard from "../Card/FriendRequestCard";
+import { useLoadFriendRequests } from "../../hooks/useLoadFriendRequests";
 
-const friendRequests = [
-    {
-        id: 9,
-        name: 'David Brown',
-        avatar: 'https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?w=150&h=150&fit=crop&crop=face',
-        mutualFriends: 5,
-        receivedDate: '3 hours ago',
-    },
-    {
-        id: 10,
-        name: 'Anna Taylor',
-        avatar: 'https://images.unsplash.com/photo-1517841905240-472988babdf9?w=150&h=150&fit=crop&crop=face',
-        mutualFriends: 9,
-        receivedDate: '1 day ago',
-    },
-    {
-        id: 11,
-        name: 'Chris Lee',
-        avatar: 'https://images.unsplash.com/photo-1507591064344-4c6ce005b128?w=150&h=150&fit=crop&crop=face',
-        mutualFriends: 2,
-        receivedDate: '4 days ago',
-    },
+// const friendRequests = [
+//     {
+//         id: 9,
+//         name: 'David Brown',
+//         avatar: 'https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?w=150&h=150&fit=crop&crop=face',
+//         mutualFriends: 5,
+//         receivedDate: '3 hours ago',
+//     },
+//     {
+//         id: 10,
+//         name: 'Anna Taylor',
+//         avatar: 'https://images.unsplash.com/photo-1517841905240-472988babdf9?w=150&h=150&fit=crop&crop=face',
+//         mutualFriends: 9,
+//         receivedDate: '1 day ago',
+//     },
+//     {
+//         id: 11,
+//         name: 'Chris Lee',
+//         avatar: 'https://images.unsplash.com/photo-1507591064344-4c6ce005b128?w=150&h=150&fit=crop&crop=face',
+//         mutualFriends: 2,
+//         receivedDate: '4 days ago',
+//     },
 
-];
+// ];
 const FriendRequestsTab = () => {
-    const [searchTerm, setSearchTerm] = useState('');
+    const { isLoading, friendRequests } = useLoadFriendRequests();
+    // Renders loading cards while the data is being fetched
+    if (isLoading) {
+        return (
+            <div className="mx-auto max-w-7xl px-4 py-6 sm:px-6 lg:px-8">
+                <div className="grid gap-4 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4">
+                    {[...Array(6)].map((_, index) => (
+                        <LoadingCard key={index} />
+                    ))}
+                </div>
+            </div>
+        );
+    }
     return <div className="mx-auto max-w-7xl px-4 py-6 sm:px-6 lg:px-8">
         <div className="mb-6">
             <div className="mb-2 flex items-center justify-between">
@@ -41,7 +53,7 @@ const FriendRequestsTab = () => {
             <p className="text-sm text-gray-500 sm:text-base">People who want to connect with you</p>
         </div>
 
-        {friendRequests.length === 0 || searchTerm ? (
+        {friendRequests.length === 0 ? (
             <EmptyState title={GetEmptyStateContent('requests')?.title} description={GetEmptyStateContent("requests")?.description}
                 Icon={GetEmptyStateContent("requests")?.icon} />
         ) : (

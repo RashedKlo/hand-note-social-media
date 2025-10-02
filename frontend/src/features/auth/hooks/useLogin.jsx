@@ -1,12 +1,12 @@
 import { useState } from 'react';
-import { loginUser } from '../services/authService'; // You'll need to implement loginUser API call
+// import { authService } from '../services/authService'; // You'll need to implement loginUser API call
 import Cookie from 'cookie-universal';
 
 export const useLogin = () => {
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);
     const cookie = Cookie();
-
+    const { loginUser } = {};
     const login = async (formData, onSuccess) => {
         try {
             setLoading(true);

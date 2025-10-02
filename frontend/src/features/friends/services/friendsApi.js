@@ -1,56 +1,13 @@
-import { apiClient } from '../../../services/api/endpoints'
+import { apiClient } from "../../../services/api/client";
 
 export const friendsApi = {
-  /**
-   * Search for users
-   */
-  searchFriends: async (query, page = 1, limit = 20) => {
-    const params = new URLSearchParams({
-      q: query,
-      page: page.toString(),
-      limit: limit.toString(),
-      
-    });
-    
-    const response = await apiClient.get(`/users/search?${params}`);
-    return response.data;
-  },
-
-  /**
-   * Load user's friends list
-   */
-  loadFriends: async (userId, page = 1, limit = 50) => {
-    const params = new URLSearchParams({
-      page: page.toString(),
-      limit: limit.toString()
-    });
-    
-    const response = await apiClient.get(`/friendships/${userId}/friends?${params}`);
-    return response.data;
-  },
-
-  /**
-   * Load received friend requests
-   */
-  loadReceivedRequests: async (userId, page = 1, limit = 20) => {
-    const params = new URLSearchParams({
-      page: page.toString(),
-      limit: limit.toString(),
-      type: 'received'
-    });
-    
-    const response = await apiClient.get(`/friendships/${userId}/requests?${params}`);
-    return response.data;
-  },
-
-
   /**
    * Send friend request
    */
   sendFriendRequest: async (requesterId, recipientId) => {
     const response = await apiClient.post('/friendships', {
       requesterId,
-      recipientId
+      recipientId,
     });
     return response.data;
   },
@@ -60,7 +17,7 @@ export const friendsApi = {
    */
   acceptFriendRequest: async (friendshipId, userId) => {
     const response = await apiClient.put(`/friendships/${friendshipId}/accept`, {
-      userId
+      userId,
     });
     return response.data;
   },
@@ -70,31 +27,87 @@ export const friendsApi = {
    */
   declineFriendRequest: async (friendshipId, userId) => {
     const response = await apiClient.put(`/friendships/${friendshipId}/decline`, {
-      userId
+      userId,
     });
     return response.data;
   },
 
   /**
-   * Cancel sent friend request
+   * Cancel friend request
    */
   cancelFriendRequest: async (friendshipId, userId) => {
     const response = await apiClient.put(`/friendships/${friendshipId}/cancel`, {
-      userId
+      userId,
     });
     return response.data;
   },
 
   /**
-   * Remove friend
+   * Block user
    */
-  removeFriend: async (friendshipId, userId) => {
-    const response = await apiClient.delete(`/friendships/${friendshipId}`, {
-      data: { userId }
+  blockUser: async (friendshipId, userId) => {
+    const response = await apiClient.put(`/friendships/${friendshipId}/block`, {
+      userId,
     });
     return response.data;
   },
+
+ feature/auth-friends-refactor
+  /**
+   * Check friendship status
+   */
+  checkFriendshipStatus: async (userId1, userId2) => {
+    const response = await apiClient.get('/friendships/check', {
+      userId1,
+      userId2,
+    });
+    return response.data;
+  },
+
+  /**
+   * Get pending friend requests
+   */
+  loadFriendRequests: async (userId, page = 1, limit = 10) => {
+
+
+    const response = await apiClient.get(`/friendships/${userId}/requests`,
+      {
+        params:{page,limit}
+      }
+    );
+    return response.data;
+  },
+
+  /**
+   * Get user friends
+   */
+  loadFriends: async (userId, page = 1, limit = 10) => {
+   
+
+    const response = await apiClient.get(`/friendships/${userId}/friends`,{
+      params:{
+        page,limit
+      }
+    });
+    return response;
+  },
+
+  /**
+   * Search user friends by name
+   */
+  searchUserFriends: async (userId, filter = '', page = 1, limit = 10) => {
+
+    const response = await apiClient.get(`/friendships/${userId}/friends/search`,{
+      params:{
+        filter,page,limit
+      }
+    });
+    return response.data;
+  },
+};
+
 
 
 
 };
+ main
