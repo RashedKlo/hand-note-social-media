@@ -1,21 +1,24 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useLogin } from '../../features/auth/hooks/useLogin';
 import Placeholder from '../../components/common/Placeholder/placeholder';
 import LoginForm from '../../features/auth/components/Login/LoginForm';
 import AuthBranding from '../../features/auth/components/AuthBranding';
 import BackgroundElements from '../../features/auth/components/BackgroundElements';
+import { useLoginUser } from '../../features/auth/hooks/useLoginUser';
 
 export default function LoginPage() {
   const navigate = useNavigate();
-  const { login, loading, error } = useLogin();
+  const { loginUser, isLoading, error, } = useLoginUser();
 
   const handleLoginSuccess = () => {
     navigate('/');
   };
 
   const handleLoginSubmit = async (formData) => {
-    await login(formData, handleLoginSuccess);
+    const res = await loginUser(formData);
+    if (res.success)
+      handleLoginSuccess();
+
   };
 
   return (
@@ -27,9 +30,9 @@ export default function LoginPage() {
         zIndex: 0,
       }}
     >
-      <Placeholder loading={loading} />
+      <Placeholder loading={isLoading} />
 
-      <BackgroundElements/>
+      <BackgroundElements />
 
       <div className="relative z-10 w-full max-w-[1400px] flex flex-col md:flex-row items-center justify-center gap-6 md:gap-12 mx-auto">
         {/* Branding */}
@@ -43,7 +46,7 @@ export default function LoginPage() {
 
         {/* Login form */}
         <div className="w-full md:w-1/2 max-w-md">
-          <LoginForm onSubmit={handleLoginSubmit} loading={loading} error={error} />
+          <LoginForm onSubmit={handleLoginSubmit} loading={isLoading} error={error} />
         </div>
       </div>
     </div>

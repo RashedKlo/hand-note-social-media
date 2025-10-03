@@ -3,40 +3,38 @@ import { apiClient } from "../../../services/api/client";
 export const authApi = {
   /**
    * Register a new user
-   * @param {Object} userData - User registration data
-   * @returns {Promise} Response with user authentication data
    */
-  registerUser: async (userData) => {
-    const response = await apiClient.post("/auth/register", userData);
+registerUser: async (registrationData) => {
+    const response = await apiClient.post('/auth/register', {
+      firstName: registrationData.firstName,
+      lastName: registrationData.lastName,
+      cityId: registrationData.cityId,
+      userName: registrationData.userName,
+      email: registrationData.email,
+      password: registrationData.password,
+      confirmPassword: registrationData.confirmPassword,
+    });
     return response.data;
   },
 
   /**
-   * Login existing user
-   * @param {Object} userData - User login credentials
-   * @returns {Promise} Response with user authentication data
+   * Login user
    */
-  loginUser: async (userData) => {
-    const response = await apiClient.post("/auth/login", userData);
+  loginUser: async (loginData) => {
+    const response = await apiClient.post('/auth/login', {
+      email: loginData.email,
+      password: loginData.password,
+    });
     return response.data;
   },
 
   /**
-   * Initiate Google OAuth login
-   * Redirects user to Google login page
-   * @returns {string} Google OAuth URL
-   */
-  loginWithGoogle: () => {
-    // Redirect to backend Google OAuth endpoint
-    window.location.href = `${apiClient.defaults.baseURL}/auth/sign-google`;
-  },
-
-  /**
-   * Alternative: Get Google OAuth URL without redirect
-   * @returns {string} Google OAuth URL
+   * Get Google OAuth login URL
    */
   getGoogleLoginUrl: () => {
-    return `${apiClient.defaults.baseURL}/auth/sign-google`;
-  }
+    // Assuming your API base URL is configured in apiClient
+    const baseUrl = apiClient.defaults.baseURL || '';
+    return `${baseUrl}/auth/sign-google`;
+  },
 };
 

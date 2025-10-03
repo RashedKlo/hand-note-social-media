@@ -8,6 +8,7 @@ export function useAcceptFriendRequest() {
     setIsLoading(true);
     const res = await friendsService.acceptFriendRequest(friendshipId, userId);
     setResult(res);
+  
     setIsLoading(false);
     return res;
   }, []);

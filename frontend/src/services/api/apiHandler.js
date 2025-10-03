@@ -38,7 +38,8 @@ export const handleError = async (error) => {
  * Generic API handler with validation support
  * @param {Function} action - Function that returns a Promise (API call)
  * @param {Function|null} validator - Optional validation function
- */
+ */  
+
 export const handleApi = async (action, validator = null) => {
   try {
     // Run validation if provided

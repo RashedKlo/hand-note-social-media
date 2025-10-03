@@ -15,6 +15,7 @@ const AllFriendsTab = () => {
         friends: loadedFriends,
         isLoading: isLoadingFriends,
         loadFriends
+
     } = useLoadFriends();
 
     const {
