@@ -1,16 +1,16 @@
-import { useState, useCallback } from 'react';
-import { authService } from '../services/authService';
+import { useState, useCallback } from "react";
+import { notificationsService } from "../services/notificationsService";
 
-export function useRegisterUser() {
+export function useMarkAsRead() {
   const [isLoading, setIsLoading] = useState(false);
-  const [error, setError] = useState(null);
   const [result, setResult] = useState(null);
+  const [error, setError] = useState(null);
 
-  const registerUser = useCallback(async (registrationData) => {
-    setIsLoading(true); 
+  const markAsRead = useCallback(async (notificationId, userId) => {
+    setIsLoading(true);
     setError(null);
-     
-    const res = await authService.registerUser(registrationData);
+    
+    const res = await notificationsService.markAsRead(notificationId, userId);
     
     if (!res.success) {
       setError(res.message);
@@ -27,10 +27,10 @@ export function useRegisterUser() {
   }, []);
 
   return { 
-    registerUser, 
+    markAsRead, 
     isLoading, 
-    error,
     result,
+    error,
     reset 
   };
 }

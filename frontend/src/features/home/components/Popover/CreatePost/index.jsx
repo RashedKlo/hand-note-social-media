@@ -54,16 +54,10 @@ const FEELINGS = [
   { emoji: '💪', text: 'motivated', category: 'state' },
 ];
 
-/* ========================================
-   MAIN COMPONENT
-   ======================================== */
+
 
 const CreatePostPopover = memo(({ open, handleClose }) => {
-  /* ========================================
-     STATE MANAGEMENT
-     ======================================== */
 
-  // Content and media states
   const [postContent, setPostContent] = useState('');
   const [selectedImages, setSelectedImages] = useState([]);
   const [selectedVideos, setSelectedVideos] = useState([]);

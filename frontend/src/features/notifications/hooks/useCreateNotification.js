@@ -1,16 +1,16 @@
-import { useState, useCallback } from 'react';
-import { authService } from '../services/authService';
+import { useState, useCallback } from "react";
+import { notificationsService } from "../services/notificationsService";
 
-export function useRegisterUser() {
+export function useCreateNotification() {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
   const [result, setResult] = useState(null);
 
-  const registerUser = useCallback(async (registrationData) => {
-    setIsLoading(true); 
+  const createNotification = useCallback(async (notificationData) => {
+    setIsLoading(true);
     setError(null);
-     
-    const res = await authService.registerUser(registrationData);
+    
+    const res = await notificationsService.createNotification(notificationData);
     
     if (!res.success) {
       setError(res.message);
@@ -27,7 +27,7 @@ export function useRegisterUser() {
   }, []);
 
   return { 
-    registerUser, 
+    createNotification, 
     isLoading, 
     error,
     result,

@@ -1,16 +1,16 @@
 import { useState, useCallback } from 'react';
-import { authService } from '../services/authService';
+import { sessionsService } from '../services/sessionsService';
 
-export function useRegisterUser() {
+export function useLogoutSession() {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
   const [result, setResult] = useState(null);
 
-  const registerUser = useCallback(async (registrationData) => {
-    setIsLoading(true); 
+  const logout = useCallback(async (email, sessionId) => {
+    setIsLoading(true);
     setError(null);
-     
-    const res = await authService.registerUser(registrationData);
+    
+    const res = await sessionsService.logoutSession(email, sessionId);
     
     if (!res.success) {
       setError(res.message);
@@ -27,10 +27,11 @@ export function useRegisterUser() {
   }, []);
 
   return { 
-    registerUser, 
+    logout, 
     isLoading, 
     error,
     result,
     reset 
   };
 }
+

@@ -1,5 +1,6 @@
 import { handleApi } from "../../../services/api/apiHandler";
-import { validateDifferentUsers, validateIds, validatePagination, validateSearchFilter } from "../utils/friendsValidation";
+import { validateID, validateName, validatePagination } from "../../../utils/Helpers";
+import { validateDifferentUsers } from "../utils/friendsValidation";
 import { friendsApi } from "./friendsApi";
 
 
@@ -10,8 +11,8 @@ export const friendsService = {
   sendFriendRequest: async (requesterId, recipientId) =>
     handleApi(
       () => friendsApi.sendFriendRequest(requesterId, recipientId),
-      () => validateIds(requesterId, recipientId)|| 
-        validateDifferentUsers(requesterId, recipientId)
+      () => validateID(requesterId,"Invalid requester ID")|| validateID(recipientId,"Invalid recipient ID")
+       || validateDifferentUsers(requesterId, recipientId)
     ),
 
   /**
@@ -20,7 +21,7 @@ export const friendsService = {
   acceptFriendRequest: async (friendshipId, userId) =>
     handleApi(
       () => friendsApi.acceptFriendRequest(friendshipId, userId),
-      () => validateIds(friendshipId, userId)
+      () => validateID(friendshipId,"Invalid friendship ID"),validateName(userId,"Invalid user ID")
     ),
 
   /**
@@ -29,7 +30,7 @@ export const friendsService = {
   declineFriendRequest: async (friendshipId, userId) =>
     handleApi(
       () => friendsApi.declineFriendRequest(friendshipId, userId),
-      () => validateIds(friendshipId, userId)
+      () => validateID(friendshipId,"Invalid friendship ID"),validateName(userId,"Invalid user ID")
     ),
 
   /**
@@ -38,7 +39,7 @@ export const friendsService = {
   cancelFriendRequest: async (friendshipId, userId) =>
     handleApi(
       () => friendsApi.cancelFriendRequest(friendshipId, userId),
-      () => validateIds(friendshipId, userId)
+      () => validateID(friendshipId,"Invalid friendship ID"),validateName(userId,"Invalid user ID")
     ),
 
   /**
@@ -47,7 +48,7 @@ export const friendsService = {
   blockUser: async (friendshipId, userId) =>
     handleApi(
       () => friendsApi.blockUser(friendshipId, userId),
-      () => validateIds(friendshipId, userId)
+      () => validateID(friendshipId,"Invalid friendship ID"),validateName(userId,"Invalid user ID")
     ),
 
   /**
@@ -56,7 +57,7 @@ export const friendsService = {
   checkFriendshipStatus: async (userId1, userId2) =>
     handleApi(
       () => friendsApi.checkFriendshipStatus(userId1, userId2),
-      () => validateIds(userId1, userId2)|| 
+      () => validateID(userId1, "Invalid user ID 1")|| validateID(userId2, "Invalid user ID 2")||
         validateDifferentUsers(userId1, userId2)
     ),
 
@@ -66,7 +67,7 @@ export const friendsService = {
   loadFriendRequests: async (userId, page = 1, limit = 10) =>
     handleApi(
       () => friendsApi.loadFriendRequests(userId, page, limit),
-      () => validateIds(userId) || validatePagination(page, limit)
+      () => validateID(userId,"Invalid user ID") || validatePagination(page, limit,"Invalid pagination parameters")
     ),
 
   /**
@@ -75,7 +76,7 @@ export const friendsService = {
   loadFriends: async (userId, page = 1, limit = 10) =>
     handleApi(
       () => friendsApi.loadFriends(userId, page, limit),
-      () => validateIds(userId) || validatePagination(page, limit)
+      () => validateID(userId) || validatePagination(page, limit)
     ),
 
   /**
@@ -84,6 +85,6 @@ export const friendsService = {
   searchUserFriends: async (userId, filter = '', page = 1, limit = 10) =>
     handleApi(
       () => friendsApi.searchUserFriends(userId, filter, page, limit),
-      () => validateIds(userId) || validatePagination(page, limit)||validateSearchFilter(filter),
+      () => validateID(userId,"Invalid user ID") || validatePagination(page, limit)||validateName(filter,"Invalid search filter",0,100),
     ),
 };

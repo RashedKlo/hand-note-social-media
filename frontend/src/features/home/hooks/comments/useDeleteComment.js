@@ -1,16 +1,16 @@
 import { useState, useCallback } from 'react';
-import { authService } from '../services/authService';
+import { commentsService } from '../services/commentsService';
 
-export function useRegisterUser() {
+export function useDeleteComment() {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
   const [result, setResult] = useState(null);
 
-  const registerUser = useCallback(async (registrationData) => {
-    setIsLoading(true); 
+  const deleteComment = useCallback(async (commentId, userId) => {
+    setIsLoading(true);
     setError(null);
-     
-    const res = await authService.registerUser(registrationData);
+    
+    const res = await commentsService.deleteComment(commentId, userId);
     
     if (!res.success) {
       setError(res.message);
@@ -27,10 +27,11 @@ export function useRegisterUser() {
   }, []);
 
   return { 
-    registerUser, 
+    deleteComment, 
     isLoading, 
     error,
     result,
     reset 
   };
 }
+

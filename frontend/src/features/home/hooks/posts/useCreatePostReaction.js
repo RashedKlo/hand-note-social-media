@@ -1,16 +1,16 @@
 import { useState, useCallback } from 'react';
-import { authService } from '../services/authService';
+import { postsService } from '../services/postsService';
 
-export function useRegisterUser() {
+export function useCreatePostReaction() {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
   const [result, setResult] = useState(null);
 
-  const registerUser = useCallback(async (registrationData) => {
-    setIsLoading(true); 
+  const createReaction = useCallback(async (reactionData) => {
+    setIsLoading(true);
     setError(null);
-     
-    const res = await authService.registerUser(registrationData);
+    
+    const res = await postsService.createPostReaction(reactionData);
     
     if (!res.success) {
       setError(res.message);
@@ -27,10 +27,11 @@ export function useRegisterUser() {
   }, []);
 
   return { 
-    registerUser, 
+    createReaction, 
     isLoading, 
     error,
     result,
     reset 
   };
 }
+

@@ -14,8 +14,8 @@ export default function RegisterPage() {
     };
 
     const handleRegisterSubmit = async (formData) => {
-        const res = await registerUser(formData, handleRegisterSuccess);
-        if (res.success)
+        const result = await registerUser(formData);
+        if (result.success)
             handleRegisterSuccess();
     };
 
@@ -38,7 +38,7 @@ export default function RegisterPage() {
 
                     <div className="w-full">
                         <RegisterForm
-                            countries={[]}//countries
+                            countries={[]}
                             onSubmit={handleRegisterSubmit}
                             loading={isLoading}
                             error={error}
