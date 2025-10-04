@@ -7,7 +7,7 @@ export function useRegisterUser() {
   const [result, setResult] = useState(null);
 
   const registerUser = useCallback(async (registrationData) => {
-    setIsLoading(true);
+    setIsLoading(true); 
     setError(null);
      
     const res = await authService.registerUser(registrationData);

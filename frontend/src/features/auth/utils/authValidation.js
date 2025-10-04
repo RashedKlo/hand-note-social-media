@@ -1,213 +1,14 @@
-import { failResponse } from "../../../services/api/apiHandler";
+import { failResponse, successResponse } from "../../../services/api/apiHandler";
+import { validateId, validateString } from "../../../utils/Helpers";
+import { EMAIL_REGEX, NAME_REGEX, USERNAME_REGEX } from "./authValidation";
 
 /**
- * Email validation regex
+ * Validates password match
+ * @param {string} password - The password
+ * @param {string} confirmPassword - The confirmation password
+ * @returns {Object} Response object with success flag
  */
-const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-
-/**
- * Name validation regex (letters and spaces only)
- */
-const NAME_REGEX = /^[a-zA-Z\s]+$/;
-
-/**
- * Username validation regex (letters, numbers, dots, underscores)
- */
-const USERNAME_REGEX = /^[a-zA-Z0-9._]+$/;
-
-/**
- * Validates first name
- */
-export const validateFirstName = (firstName) => {
-  if (!firstName || typeof firstName !== 'string' || firstName.trim() === '') {
-    return failResponse(
-      "Invalid first name",
-      ["First name is required and must be a non-empty string"]
-    );
-  }
-
-  if (firstName.length < 2) {
-    return failResponse(
-      "Invalid first name",
-      ["First name must be at least 2 characters long"]
-    );
-  }
-
-  if (firstName.length > 50) {
-    return failResponse(
-      "Invalid first name",
-      ["First name must not exceed 50 characters"]
-    );
-  }
-
-  if (!NAME_REGEX.test(firstName)) {
-    return failResponse(
-      "Invalid first name",
-      ["First name can only contain letters and spaces"]
-    );
-  }
-
-  return null;
-};
-
-/**
- * Validates last name
- */
-export const validateLastName = (lastName) => {
-  if (!lastName || typeof lastName !== 'string' || lastName.trim() === '') {
-    return failResponse(
-      "Invalid last name",
-      ["Last name is required and must be a non-empty string"]
-    );
-  }
-
-  if (lastName.length < 2) {
-    return failResponse(
-      "Invalid last name",
-      ["Last name must be at least 2 characters long"]
-    );
-  }
-
-  if (lastName.length > 50) {
-    return failResponse(
-      "Invalid last name",
-      ["Last name must not exceed 50 characters"]
-    );
-  }
-
-  if (!NAME_REGEX.test(lastName)) {
-    return failResponse(
-      "Invalid last name",
-      ["Last name can only contain letters and spaces"]
-    );
-  }
-
-  return null;
-};
-
-/**
- * Validates city ID
- */
-export const validateCityId = (cityId) => {
-  if (!cityId) {
-    return failResponse(
-      "Invalid city ID",
-      ["City ID is required"]
-    );
-  }
-
-  if (typeof cityId !== 'number' || !Number.isInteger(cityId)) {
-    return failResponse(
-      "Invalid city ID",
-      ["City ID must be a number"]
-    );
-  }
-
-  if (cityId < 1) {
-    return failResponse(
-      "Invalid city ID",
-      ["City ID must be a positive number"]
-    );
-  }
-
-  return null;
-};
-
-/**
- * Validates email format
- */
-export const validateEmail = (email) => {
-  if (!email || typeof email !== 'string' || email.trim() === '') {
-    return failResponse(
-      "Invalid email",
-      ["Email is required and must be a non-empty string"]
-    );
-  }
-
-  if (!EMAIL_REGEX.test(email)) {
-    return failResponse(
-      "Invalid email",
-      ["Email must be in a valid format"]
-    );
-  }
-
-  if (email.length > 320) {
-    return failResponse(
-      "Invalid email",
-      ["Email must not exceed 320 characters"]
-    );
-  }
-
-  return null;
-};
-
-/**
- * Validates password
- */
-export const validatePassword = (password, fieldName = "Password") => {
-  if (!password || typeof password !== 'string') {
-    return failResponse(
-      `Invalid ${fieldName.toLowerCase()}`,
-      [`${fieldName} is required and must be a string`]
-    );
-  }
-
-  if (password.length < 8) {
-    return failResponse(
-      `Invalid ${fieldName.toLowerCase()}`,
-      [`${fieldName} must be at least 8 characters long`]
-    );
-  }
-
-  if (password.length > 100) {
-    return failResponse(
-      `Invalid ${fieldName.toLowerCase()}`,
-      [`${fieldName} must not exceed 100 characters`]
-    );
-  }
-
-  return null;
-};
-
-/**
- * Validates username
- */
-export const validateUsername = (userName) => {
-  if (!userName || typeof userName !== 'string' || userName.trim() === '') {
-    return failResponse(
-      "Invalid username",
-      ["Username is required and must be a non-empty string"]
-    );
-  }
-
-  if (userName.length < 3) {
-    return failResponse(
-      "Invalid username",
-      ["Username must be at least 3 characters long"]
-    );
-  }
-
-  if (userName.length > 50) {
-    return failResponse(
-      "Invalid username",
-      ["Username must not exceed 50 characters"]
-    );
-  }
-
-  if (!USERNAME_REGEX.test(userName)) {
-    return failResponse(
-      "Invalid username",
-      ["Username can only contain letters, numbers, dots, and underscores"]
-    );
-  }
-
-  return null;
-};
-
-/**
- * Validates password confirmation
- */
-export const validatePasswordMatch = (password, confirmPassword) => {
+ const validatePasswordMatch = (password, confirmPassword) => {
   if (!confirmPassword || typeof confirmPassword !== 'string') {
     return failResponse(
       "Invalid password confirmation",
@@ -222,8 +23,109 @@ export const validatePasswordMatch = (password, confirmPassword) => {
     );
   }
 
-  return null;
+  return successResponse({ password, confirmPassword }, "Passwords match");
 };
 
+/**
+ * Validates login data
+ * @param {Object} loginData - The login data to validate
+ * @returns {Object} Response object with success flag
+ */
+export const validateLoginData = (loginData) => {
+  // Validate email
+  const emailResult = validateString(loginData?.email, "Email", {
+    maxLength: 320,
+    pattern: EMAIL_REGEX,
+    patternMessage: "Email must be in a valid format"
+  });
+  if (!emailResult.success) {
+    return emailResult;
+  }
+   
+  // Validate password
+  const passwordResult = validateString(loginData?.password, "Password", {
+    minLength: 8,
+    maxLength: 100
+  });
+  if (!passwordResult.success) {
+    return passwordResult;
+  }
+  
+  return successResponse(loginData, "Login data is valid");
+};
 
+/**
+ * Validates registration data
+ * @param {Object} registrationData - The registration data to validate
+ * @returns {Object} Response object with success flag
+ */
+export const validateRegistrationData = (registrationData) => {
+  // Validate first name
+  const firstNameResult = validateString(registrationData?.firstName, "First Name", {
+    minLength: 2,
+    maxLength: 50,
+    pattern: NAME_REGEX,
+    patternMessage: "First name can only contain letters and spaces"
+  });
+  if (!firstNameResult.success) {
+    return firstNameResult;
+  }
+  
+  // Validate last name
+  const lastNameResult = validateString(registrationData?.lastName, "Last Name", {
+    minLength: 2,
+    maxLength: 50,
+    pattern: NAME_REGEX,
+    patternMessage: "Last name can only contain letters and spaces"
+  });
+  if (!lastNameResult.success) {
+    return lastNameResult;
+  }
+  
+  // Validate city ID
+  const cityIdResult = validateId(registrationData?.cityId, "City ID");
+  if (!cityIdResult.success) {
+    return cityIdResult;
+  }
+  
+  // Validate username
+  const usernameResult = validateString(registrationData?.userName, "Username", {
+    minLength: 3,
+    maxLength: 50,
+    pattern: USERNAME_REGEX,
+    patternMessage: "Username can only contain letters, numbers, dots, and underscores"
+  });
+  if (!usernameResult.success) {
+    return usernameResult;
+  }
+  
+  // Validate email
+  const emailResult = validateString(registrationData?.email, "Email", {
+    maxLength: 320,
+    pattern: EMAIL_REGEX,
+    patternMessage: "Email must be in a valid format"
+  });
+  if (!emailResult.success) {
+    return emailResult;
+  }
+  
+  // Validate password
+  const passwordResult = validateString(registrationData?.password, "Password", {
+    minLength: 8,
+    maxLength: 100
+  });
+  if (!passwordResult.success) {
+    return passwordResult;
+  }
+  
+  // Validate password match
+  const passwordMatchResult = validatePasswordMatch(
+    registrationData?.password, 
+    registrationData?.confirmPassword
+  );
+  if (!passwordMatchResult.success) {
+    return passwordMatchResult;
+  }
 
+  return successResponse(registrationData, "Registration data is valid");
+};

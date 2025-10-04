@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import LoginFields from './LoginFileds';
 import SocialLogin from '../SocialLogin';
@@ -20,12 +20,6 @@ export default function LoginForm({ onSubmit, loading, error }) {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    const validationErrors = validateLoginForm(formData);
-    if (Object.keys(validationErrors).length > 0) {
-      setErrors(validationErrors);
-      return;
-    }
-
     await onSubmit(formData);
   };
 
@@ -36,10 +30,10 @@ export default function LoginForm({ onSubmit, loading, error }) {
       </h2>
 
       <form onSubmit={handleSubmit} className="space-y-6">
-     <LoginFields 
-     formData={formData}
-                    errors={errors}
-                    onChange={handleChange}/>
+        <LoginFields
+          formData={formData}
+          errors={errors}
+          onChange={handleChange} />
 
         {error && (
           <div className="text-red-600 text-center font-medium">{error}</div>
@@ -54,7 +48,7 @@ export default function LoginForm({ onSubmit, loading, error }) {
           {loading ? 'Signing In...' : 'Sign In'}
         </button>
       </form>
-                <SocialLogin />
+      <SocialLogin />
 
       <p className="mt-6 text-center text-sm text-slate-600">
         Don't have an account?{' '}
