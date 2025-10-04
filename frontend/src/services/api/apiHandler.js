@@ -10,7 +10,7 @@ export const successResponse = (data, message = null) => ({
 export const failResponse = (message, errors = []) => ({
   success: false,
   message,
-  errors
+  errors 
 });
   
 /**
@@ -37,19 +37,18 @@ export const handleError = async (error) => {
 /**
  * Generic API handler with validation support
  * @param {Function} action - Function that returns a Promise (API call)
- * @param {Function|null} validator - Optional validation function
+ * @param {successResponse | failResponse} validator - Optional validation function
  */  
 
 export const handleApi = async (action, validator = null) => {
   try {
     // Run validation if provided
     if (validator) {
-      const validationError = validator();
-      if (validationError) {
-        return validationError;
+      const validation = validator();
+      if (!validation.success) {
+        return validation;
       }
     }
-    
     // Execute the API call
     const response = await action();
     return successResponse(response.Data, response.Message);
